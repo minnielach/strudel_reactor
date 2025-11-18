@@ -41,13 +41,21 @@ export default function StrudelDemo() {
 
     const [state, setState] = useState("stop");
 
+    // useEffect for volume
     useEffect(() => {
         if (state == "play") {
             handlePlay();
         }
     }, [volume])
 
-useEffect(() => {
+    // useEffect for proctext
+    useEffect(() => {
+        if (globalEditor) {
+            globalEditor.setCode(procText);
+        }
+    }, [procText]);
+
+    useEffect(() => {
 
     if (!hasRun.current) {
         document.addEventListener("d3Data", handleD3Data);
@@ -80,7 +88,6 @@ useEffect(() => {
                 },
             });
             
-        document.getElementById('proc').value = procText
         globalEditor.setCode(procText);
     }
 
@@ -88,14 +95,14 @@ useEffect(() => {
 
 
 return (
-    <div>
+    <div className="py-2 mt-2 container my-4">
         <h2>Strudel Demo</h2>
         <main>
 
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                    <PreprocessTextarea defaultValue={procText} onChange={(e) => setProcText(e.target.value)} />
+                    <PreprocessTextarea value={procText} onChange={(e) => setProcText(e.target.value)} />
                     </div>
                     <div className="col-md-4">
                         <nav>

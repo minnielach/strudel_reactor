@@ -10,21 +10,27 @@ function DJControls({volume, onVolumeChange}) {
             <input type="range" className="form-range" min="0" max="2" step="0.01" onMouseUp={onVolumeChange} id="volume_range"/>
 
             <div className="form-check"> 
-                <input className="form-check-input" type="checkbox" value="" id="s1"/> 
-                <label className="form-check-label" htmlFor="s1">
-                     s1
+                <input className="form-check-input" type="checkbox" value="" id="drums"/> 
+                <label className="form-check-label" htmlFor="drums">
+                     drums
                 </label> 
             </div> 
             <div className="form-check"> 
-                <input className="form-check-input" type="checkbox" value="" id="d1"/> 
-                <label className="form-check-label" htmlFor="d1">
-                     d1
+                <input className="form-check-input" type="checkbox" value="" id="basslines"/> 
+                <label className="form-check-label" htmlFor="basslines">
+                     basslines
                 </label> 
             </div> 
             <div className="form-check"> 
-                <input className="form-check-input" type="checkbox" value="" id="d2"/> 
-                <label className="form-check-label" htmlFor="d2">
-                     d2
+                <input className="form-check-input" type="checkbox" value="" id="appregaitor1"/> 
+                <label className="form-check-label" htmlFor="appregaitor1">
+                    appregaitor1
+                </label> 
+            </div> 
+            <div className="form-check"> 
+                <input className="form-check-input" type="checkbox" value="" id="appregaitor2"/> 
+                <label className="form-check-label" htmlFor="appregaitor2">
+                    appregaitor2
                 </label> 
             </div> 
             
