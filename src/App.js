@@ -14,6 +14,7 @@ import PlayButtons from './components/PlayButtons';
 import ProcButtons from './components/ProcButtons';
 import PreprocessTextarea from './components/PreprocessTextarea';
 import { Preprocess } from './utils/PreprocessLogic';
+import { saveSettings, loadSettings } from './utils/SaveandLoad';
 
 let globalEditor = null;
 
@@ -26,12 +27,14 @@ export default function StrudelDemo() {
     const hasRun = useRef(false);
 
     const handlePlay = () => {
+        if (!globalEditor) return;
         let outputText = Preprocess({ inputText: procText, volume: volume});
         globalEditor.setCode(outputText);
         globalEditor.evaluate()
     }
 
     const handleStop = () => {
+        if (!globalEditor) return;
         globalEditor.stop()
     }
 
@@ -39,14 +42,32 @@ export default function StrudelDemo() {
 
     const [volume, setVolume] = useState(1);
 
-    const [state, setState] = useState("stop");
+    const [state, setState] = useState("stop");    
+
+    const HandleSave = () => {
+        const settings = {volume: volume};
+        saveSettings(settings);
+        alert("Saved!");
+    };
+
+    const HandleLoad = () => {
+        const loaded = loadSettings();
+        if (!loaded) {
+            return alert("Saved settings not found!")
+        };
+
+        setVolume(loaded.volume);
+        alert("Loaded");
+
+    };
 
     // useEffect for volume
     useEffect(() => {
         if (state == "play") {
             handlePlay();
         }
-    }, [volume])
+    }, [volume]);
+
 
     // useEffect for proctext
     useEffect(() => {
@@ -118,7 +139,9 @@ return (
                         <div id="output" />
                     </div>
                     <div className="col-md-4">
-                        <DJControls volumeChange={volume} onVolumeChange={(e) => setVolume(e.target.value)}/>
+                        <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
+                        onSave = {HandleSave} onLoad = {HandleLoad}
+                    />
                     </div>
                 </div>
             </div>

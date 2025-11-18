@@ -1,13 +1,9 @@
-function DJControls({volume, onVolumeChange}) {
+function DJControls({volume, onVolumeChange, onSave, onLoad}) {
     return (
         <>
-            <div className="input-group mb-3">
-            <span className="input-group-text" id="cpm_label">setCPM</span>
-            <input type="text" className="form-control" id="cpm_text_input"placeholder="120" aria-label="CPM" aria-describedby="cpm_label"/>
-            </div>
 
             <label htmlFor="volume_range" className="form-label">Volume</label>
-            <input type="range" className="form-range" min="0" max="2" step="0.01" onMouseUp={onVolumeChange} id="volume_range"/>
+            <input type="range" className="form-range" min="0" max="2" step="0.01" value={volume} onChange={onVolumeChange} id="volume_range"/>
 
             <div className="form-check"> 
                 <input className="form-check-input" type="checkbox" value="" id="drums"/> 
@@ -34,6 +30,9 @@ function DJControls({volume, onVolumeChange}) {
                 </label> 
             </div> 
             
+            <hr />
+            <button onClick={onSave} className="btn btn-secondary w-100 mt-2">Save</button>
+            <button onClick={onLoad} className="btn btn-secondary w-100 mt-2">Load</button>
     </>
     );
 }
