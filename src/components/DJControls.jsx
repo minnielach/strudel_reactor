@@ -1,6 +1,7 @@
 function DJControls({volume, onVolumeChange, onSave, onLoad, bassMute, onBassMuteChange, bassReverb, onBassReverbChange, bassPitch, onBassPitchChange, arpMute, onArpMuteChange, arpReverb, onArpReverbChange, arpPitch, onArpPitchChange, drumsMute, onDrumsMuteChange, drumsReverb, onDrumsReverbChange, drumsPitch, onDrumsPitchChange, drums2Mute, onDrums2MuteChange, drums2Reverb, onDrums2ReverbChange, drums2Pitch, onDrums2PitchChange}) {
     return (
         <>
+
             {/* volume slider */} 
             <label htmlFor="volume_range" className="form-label">Volume</label>
             <input type="range" className="form-range" min="0" max="2" step="0.01" value={volume} onChange={onVolumeChange} id="volume_range"/>
@@ -67,8 +68,8 @@ function DJControls({volume, onVolumeChange, onSave, onLoad, bassMute, onBassMut
 
             <hr />
             {/* save and load button */} 
-            <button onClick={onSave} className="btn btn-secondary w-100 mt-2">Save</button>
-            <button onClick={onLoad} className="btn btn-secondary w-100 mt-2">Load</button>
+            <button onClick={onSave} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Save</button>
+            <button onClick={onLoad} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Load</button>
     </>
     );
 }

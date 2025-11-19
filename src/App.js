@@ -155,33 +155,30 @@ return (
     <div className="py-2 mt-2 container my-4">
         <h2>Strudel Demo</h2>
         <main>
-
-            <div className="container-fluid">
+        <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+
+                    <div className="col-md-8">
                     <PreprocessTextarea value={procText} onChange={(e) => setProcText(e.target.value)} />
+                    <div id="editor" style={{marginTop: "20px", overflowY: "auto", height: "650px"}}></div>
+                    <div id="output"></div>
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md">
                         <nav>
                             <PlayButtons onPlay={() => {setState("play"); handlePlay()}} onStop={() => {setState("stop"); handleStop()}}/>
+                            <br />
+                            <br />
+                            <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
+                        
+                            bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
+                            arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
+                            drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
+                            drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
+                            onSave = {HandleSave} onLoad = {HandleLoad}
+                            />
+                            <h5>Audio Graph - Placeholder</h5>
+                            <AudioGraph data={graphAudio}/>
                         </nav>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                        <div id="editor" />
-                        <div id="output" />
-                    </div>
-                    <div className="col-md-4">
-                        <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
-                        onSave = {HandleSave} onLoad = {HandleLoad}
-                        bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
-                        arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
-                        drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
-                        drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
-                    />
-                    <h5 className="mt-3">Audio Graph - PlaceHolder</h5>
-                    <AudioGraph data={graphAudio}/>
                     </div>
                 </div>
             </div>
