@@ -15,12 +15,9 @@ import ProcButtons from './components/ProcButtons';
 import PreprocessTextarea from './components/PreprocessTextarea';
 import { Preprocess } from './utils/PreprocessLogic';
 import { saveSettings, loadSettings } from './utils/SaveandLoad';
+import AudioGraph from './components/AudioD3Graph';
 
 let globalEditor = null;
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
 
 export default function StrudelDemo() {
 
@@ -59,6 +56,8 @@ export default function StrudelDemo() {
     const[drums2Mute, setDrums2Mute] = useState(1);
     const[drums2Reverb, setDrums2Reverb] = useState(0.2);
     const[drums2Pitch, setDrums2Pitch] = useState(1);
+
+    const [graphAudio, setGraphAudio] = useState ([]);
 
     const HandleSave = () => {
         const settings = {volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch};
@@ -107,7 +106,11 @@ export default function StrudelDemo() {
     useEffect(() => {
 
     if (!hasRun.current) {
-        document.addEventListener("d3Data", handleD3Data);
+
+        document.addEventListener("d3Data", (event) => {
+            setGraphAudio(event.detail);
+        });
+
         console_monkey_patch();
         hasRun.current = true;
         //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
@@ -174,6 +177,11 @@ return (
                         drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
                         drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
                     />
+
+{console.log("GRAPH AUDIO:", graphAudio)}
+
+                    <h5 className="mt-3">Audio Graph - PlaceHolder</h5>
+                    <AudioGraph data={graphAudio}/>
                     </div>
                 </div>
             </div>
