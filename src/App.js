@@ -11,7 +11,6 @@ import { stranger_tune } from './tunes';
 import console_monkey_patch, { getD3Data } from './console-monkey-patch';
 import DJControls from './components/DJControls';
 import PlayButtons from './components/PlayButtons';
-import ProcButtons from './components/ProcButtons';
 import PreprocessTextarea from './components/PreprocessTextarea';
 import { Preprocess } from './utils/PreprocessLogic';
 import { saveSettings, loadSettings } from './utils/SaveandLoad';
@@ -23,6 +22,7 @@ export default function StrudelDemo() {
 
     const hasRun = useRef(false);
 
+    // handles starting and evaluating the audio 
     const handlePlay = () => {
         if (!globalEditor) return;
         let outputText = Preprocess({ inputText: procText, volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch});
@@ -30,10 +30,12 @@ export default function StrudelDemo() {
         globalEditor.evaluate()
     }
 
+    // handles stopping the audio
     const handleStop = () => {
         if (!globalEditor) return;
         globalEditor.stop()
     }
+
 
     const [procText, setProcText] = useState(stranger_tune)
 
@@ -59,18 +61,21 @@ export default function StrudelDemo() {
 
     const [graphAudio, setGraphAudio] = useState ([]);
 
+    // handles saving the settings to the local storage (taking into account all the variables)
     const HandleSave = () => {
         const settings = {volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch};
         saveSettings(settings);
         alert("Saved!");
     };
 
+    // loads the saved settings from local storage
     const HandleLoad = () => {
+        // checks if there is saved settings first, then alerts user if not found
         const loaded = loadSettings();
         if (!loaded) {
             return alert("Saved settings not found!")
         };
-
+        // sets the saved settings to the current setting
         setVolume(loaded.volume);
         setBassMute(loaded.bassMute);
         setBassReverb(loaded.bassReverb);
@@ -88,7 +93,7 @@ export default function StrudelDemo() {
 
     };
 
-    // useEffect for volume
+    // useEffect for all variables so if any changes happen, they will update those settings
     useEffect(() => {
         if (state == "play") {
             handlePlay();
@@ -145,7 +150,7 @@ export default function StrudelDemo() {
 
 }, [procText]);
 
-
+// UI display
 return (
     <div className="py-2 mt-2 container my-4">
         <h2>Strudel Demo</h2>
@@ -158,8 +163,6 @@ return (
                     </div>
                     <div className="col-md-4">
                         <nav>
-                            <ProcButtons/>
-                            <br />
                             <PlayButtons onPlay={() => {setState("play"); handlePlay()}} onStop={() => {setState("stop"); handleStop()}}/>
                         </nav>
                     </div>
@@ -177,9 +180,6 @@ return (
                         drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
                         drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
                     />
-
-{console.log("GRAPH AUDIO:", graphAudio)}
-
                     <h5 className="mt-3">Audio Graph - PlaceHolder</h5>
                     <AudioGraph data={graphAudio}/>
                     </div>

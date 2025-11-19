@@ -1,4 +1,6 @@
 function PreprocessTextarea ({ value, onChange }) {
+
+    // for editing the preprocessing text input
     return (
         <>
             <label htmlFor="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>

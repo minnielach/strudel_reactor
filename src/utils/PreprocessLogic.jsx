@@ -1,5 +1,6 @@
 export function Preprocess ({ inputText, volume , bassMute, bassReverb, bassPitch, arpMute, arpReverb, arpPitch, drumsMute, drumsReverb, drumsPitch, drums2Mute, drums2Reverb, drums2Pitch}) {
     
+    // replacing the {$---} in tune.js with the actual choosen values from the 
     const outputText = inputText.replace(/\{\$VOLUME\}/g, volume)
                                 .replace(/\{\$BASS_MUTE\}/g, bassMute)
                                 .replace(/\{\$BASS_REVERB\}/g, bassReverb)

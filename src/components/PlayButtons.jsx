@@ -1,4 +1,5 @@
 function PlayButtons({ onPlay , onStop }) {
+    // buttons for the play and stop functions
     return (
         <>
         <div className="btn-group" role="group" aria-label="Basic mixed styles example"> 
