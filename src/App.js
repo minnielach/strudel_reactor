@@ -28,7 +28,7 @@ export default function StrudelDemo() {
 
     const handlePlay = () => {
         if (!globalEditor) return;
-        let outputText = Preprocess({ inputText: procText, volume: volume});
+        let outputText = Preprocess({ inputText: procText, volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch});
         globalEditor.setCode(outputText);
         globalEditor.evaluate()
     }
@@ -44,8 +44,24 @@ export default function StrudelDemo() {
 
     const [state, setState] = useState("stop");    
 
+    const[bassMute, setBassMute] = useState(1);
+    const[bassReverb, setBassReverb] = useState(0.2);
+    const[bassPitch, setBassPitch] = useState(1);
+
+    const[arpMute, setArpMute] = useState(1);
+    const[arpReverb, setArpReverb] = useState(0.2);
+    const[arpPitch, setArpPitch] = useState(1);
+
+    const[drumsMute, setDrumsMute] = useState(1);
+    const[drumsReverb, setDrumsReverb] = useState(0.2);
+    const[drumsPitch, setDrumsPitch] = useState(1);
+
+    const[drums2Mute, setDrums2Mute] = useState(1);
+    const[drums2Reverb, setDrums2Reverb] = useState(0.2);
+    const[drums2Pitch, setDrums2Pitch] = useState(1);
+
     const HandleSave = () => {
-        const settings = {volume: volume};
+        const settings = {volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch};
         saveSettings(settings);
         alert("Saved!");
     };
@@ -57,6 +73,18 @@ export default function StrudelDemo() {
         };
 
         setVolume(loaded.volume);
+        setBassMute(loaded.bassMute);
+        setBassReverb(loaded.bassReverb);
+        setBassPitch(loaded.bassPitch);
+        setArpMute(loaded.arpMute);
+        setArpReverb(loaded.arpReverb);
+        setArpPitch(loaded.arpPitch);
+        setDrumsMute(loaded.drumsMute);
+        setDrumsReverb(loaded.drumsReverb);
+        setDrumsPitch(loaded.drumsPitch);
+        setDrums2Mute(loaded.drums2Mute);
+        setDrums2Reverb(loaded.drums2Reverb);
+        setDrums2Pitch(loaded.drums2Pitch);
         alert("Loaded");
 
     };
@@ -66,7 +94,7 @@ export default function StrudelDemo() {
         if (state == "play") {
             handlePlay();
         }
-    }, [volume]);
+    }, [volume, bassMute, bassReverb, bassPitch, arpMute, arpReverb, arpPitch, drumsMute, drumsReverb, drumsPitch, drums2Mute, drums2Reverb, drums2Pitch]);
 
 
     // useEffect for proctext
@@ -141,6 +169,10 @@ return (
                     <div className="col-md-4">
                         <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
                         onSave = {HandleSave} onLoad = {HandleLoad}
+                        bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
+                        arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
+                        drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
+                        drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
                     />
                     </div>
                 </div>
