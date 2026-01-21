@@ -36,8 +36,10 @@ export default function StrudelDemo() {
         globalEditor.stop()
     }
 
+    // use states
+    const [selectInstrument, setSelectInstrument] = useState("");
 
-    const [procText, setProcText] = useState(stranger_tune)
+    const [procText, setProcText] = useState(stranger_tune);
 
     const [volume, setVolume] = useState(1);
 
@@ -169,6 +171,8 @@ return (
                             <br />
                             <br />
                             <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
+
+                            selectInstrument={selectInstrument} onInstrumentChange={(e) => setSelectInstrument(e.target.value)}
                         
                             bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
                             arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
