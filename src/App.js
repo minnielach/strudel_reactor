@@ -63,6 +63,11 @@ export default function StrudelDemo() {
 
     const [graphAudio, setGraphAudio] = useState ([]);
 
+    const [mixName, setMixName] = useState ("");
+    const [savedMix, setSavedMix] = useState ([]);
+    const [selectMix, setSelectMix] = useState ("");
+
+
     // handles saving the settings to the local storage (taking into account all the variables)
     const HandleSave = () => {
         const settings = {volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch};
