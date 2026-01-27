@@ -1,4 +1,4 @@
-function DJControls({volume, onVolumeChange, onSave, onLoad, bassMute, onBassMuteChange, bassReverb, onBassReverbChange, bassPitch, onBassPitchChange, arpMute, onArpMuteChange, arpReverb, onArpReverbChange, arpPitch, onArpPitchChange, drumsMute, onDrumsMuteChange, drumsReverb, onDrumsReverbChange, drumsPitch, onDrumsPitchChange, drums2Mute, onDrums2MuteChange, drums2Reverb, onDrums2ReverbChange, drums2Pitch, onDrums2PitchChange, selectInstrument, onInstrumentChange}) {
+function DJControls({volume, onVolumeChange, onSave, onLoad, mixName, onMixNameChange, savedMix, selectMix, onSelectMixChange, bassMute, onBassMuteChange, bassReverb, onBassReverbChange, bassPitch, onBassPitchChange, arpMute, onArpMuteChange, arpReverb, onArpReverbChange, arpPitch, onArpPitchChange, drumsMute, onDrumsMuteChange, drumsReverb, onDrumsReverbChange, drumsPitch, onDrumsPitchChange, drums2Mute, onDrums2MuteChange, drums2Reverb, onDrums2ReverbChange, drums2Pitch, onDrums2PitchChange, selectInstrument, onInstrumentChange}) {
     return (
         <>
 
@@ -87,6 +87,20 @@ function DJControls({volume, onVolumeChange, onSave, onLoad, bassMute, onBassMut
                 <input type="range" className="form-range" min="0.2" max="2" step="0.1" value={drums2Pitch} onChange={(e) => onDrums2PitchChange(parseFloat(e.target.value))}/>
                 </>
             )}
+
+            <hr />
+            {/* text input to save a mix name */}
+            <label className="form-label">Mix Name</label>
+            <input type="text" className="form-control mb-2" value={mixName} onChange={onMixNameChange} placeholder="Type your mix name!"/>
+
+            {/* a dropdown menu to select your saved mixes */}
+            <label className="form-label">Load Mix</label>
+            <select className="form-select mb-2" value={selectMix} onChange={onSelectMixChange}>
+                <option value="">Select your mix!</option>
+                {savedMix.map(m => (
+                    <option key={m.name} value={m.name}>{m.name}</option>
+                ))}
+            </select>
 
             <hr />
             {/* save and load button */} 

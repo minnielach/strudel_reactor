@@ -13,8 +13,9 @@ import DJControls from './components/DJControls';
 import PlayButtons from './components/PlayButtons';
 import PreprocessTextarea from './components/PreprocessTextarea';
 import { Preprocess } from './utils/PreprocessLogic';
-import { saveSettings, loadSettings } from './utils/SaveandLoad';
+import { saveSettings, loadSettings, loadByName } from './utils/SaveandLoad';
 import AudioGraph from './components/AudioD3Graph';
+import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 
 let globalEditor = null;
 
@@ -71,18 +72,23 @@ export default function StrudelDemo() {
     // handles saving the settings to the local storage (taking into account all the variables)
     const HandleSave = () => {
         const settings = {volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch};
-        saveSettings(settings);
+        // saves mixes by their name
+        const updateList = saveSettings(settings, mixName)
+        setSavedMix(updateList);
         alert("Saved!");
     };
 
     // loads the saved settings from local storage
     const HandleLoad = () => {
-        // checks if there is saved settings first, then alerts user if not found
-        const loaded = loadSettings();
-        if (!loaded) {
+        // returns the name and settings and  if there is no saved settings, then alerts user if not found
+        const loadName = loadByName(selectMix);
+        if (!loadName) {
             return alert("Saved settings not found!")
         };
-        // sets the saved settings to the current setting
+
+        // loads settings of picked mix name
+        const loaded = loadName.settings
+
         setVolume(loaded.volume);
         setBassMute(loaded.bassMute);
         setBassReverb(loaded.bassReverb);
@@ -107,6 +113,10 @@ export default function StrudelDemo() {
         }
     }, [volume, bassMute, bassReverb, bassPitch, arpMute, arpReverb, arpPitch, drumsMute, drumsReverb, drumsPitch, drums2Mute, drums2Reverb, drums2Pitch]);
 
+    // useEffect for loading settings 
+    useEffect(() => {
+        setSavedMix(loadSettings());
+    }, []);
 
     // useEffect for proctext
     useEffect(() => {
@@ -183,6 +193,7 @@ return (
                             arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
                             drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
                             drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
+                            mixName = {mixName} onMixNameChange={(e) => setMixName(e.target.value)} savedMix={savedMix} selectMix={selectMix} onSelectMixChange={(e) => setSelectMix(e.target.value)}
                             onSave = {HandleSave} onLoad = {HandleLoad}
                             />
                             <h5>Audio Graph - Placeholder</h5>
