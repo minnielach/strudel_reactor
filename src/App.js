@@ -38,7 +38,7 @@ export default function StrudelDemo() {
     }
 
     // use states
-    const [selectInstrument, setSelectInstrument] = useState("");
+    const [selectInstrument, setSelectInstrument] = useState("bass");
 
     const [procText, setProcText] = useState(stranger_tune);
 
@@ -63,6 +63,7 @@ export default function StrudelDemo() {
     const[drums2Pitch, setDrums2Pitch] = useState(1);
 
     const [graphAudio, setGraphAudio] = useState ([]);
+    const [graphStyle, setGraphStyle] = useState ("lines");
 
     const [mixName, setMixName] = useState ("");
     const [savedMix, setSavedMix] = useState ([]);
@@ -195,9 +196,9 @@ return (
                             drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
                             mixName = {mixName} onMixNameChange={(e) => setMixName(e.target.value)} savedMix={savedMix} selectMix={selectMix} onSelectMixChange={(e) => setSelectMix(e.target.value)}
                             onSave = {HandleSave} onLoad = {HandleLoad}
+                            graphStyle={graphStyle} onGraphStyleChange={(e) => setGraphStyle(e.target.value)}
                             />
-                            <h5>Audio Graph - Placeholder</h5>
-                            <AudioGraph data={graphAudio}/>
+                            <AudioGraph data={graphAudio} graphStyle={graphStyle}/>
                         </nav>
                     </div>
                 </div>

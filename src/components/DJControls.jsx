@@ -1,4 +1,4 @@
-function DJControls({volume, onVolumeChange, onSave, onLoad, mixName, onMixNameChange, savedMix, selectMix, onSelectMixChange, bassMute, onBassMuteChange, bassReverb, onBassReverbChange, bassPitch, onBassPitchChange, arpMute, onArpMuteChange, arpReverb, onArpReverbChange, arpPitch, onArpPitchChange, drumsMute, onDrumsMuteChange, drumsReverb, onDrumsReverbChange, drumsPitch, onDrumsPitchChange, drums2Mute, onDrums2MuteChange, drums2Reverb, onDrums2ReverbChange, drums2Pitch, onDrums2PitchChange, selectInstrument, onInstrumentChange}) {
+function DJControls({volume, onVolumeChange, onSave, onLoad, mixName, onMixNameChange, savedMix, selectMix, onSelectMixChange, bassMute, onBassMuteChange, bassReverb, onBassReverbChange, bassPitch, onBassPitchChange, arpMute, onArpMuteChange, arpReverb, onArpReverbChange, arpPitch, onArpPitchChange, drumsMute, onDrumsMuteChange, drumsReverb, onDrumsReverbChange, drumsPitch, onDrumsPitchChange, drums2Mute, onDrums2MuteChange, drums2Reverb, onDrums2ReverbChange, drums2Pitch, onDrums2PitchChange, selectInstrument, onInstrumentChange, graphStyle, onGraphStyleChange}) {
     return (
         <>
 
@@ -106,6 +106,22 @@ function DJControls({volume, onVolumeChange, onSave, onLoad, mixName, onMixNameC
             {/* save and load button */} 
             <button onClick={onSave} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Save</button>
             <button onClick={onLoad} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Load</button>
+
+            <hr />
+            {/* radio buttons for graph styles */}
+            {/* lines */}
+            <h5>Audio (Placeholder)</h5>
+            <div className="form-check">
+                <input className="form-check-input" type="radio" name="graphStyle" value="lines" checked={graphStyle === "lines"} onChange={onGraphStyleChange}/>
+                <label className="form-check-label">Lines</label>
+            </div>
+
+            {/* bars */}
+            <div className="form-check">
+                <input className="form-check-input" type="radio" name="graphStyle" value="bars" checked={graphStyle === "bars"} onChange={onGraphStyleChange}/>
+                <label className="form-check-label">Bars</label>
+            </div>
+
     </>
     );
 }

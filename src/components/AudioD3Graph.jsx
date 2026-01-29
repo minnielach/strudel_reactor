@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import {useEffect, useRef} from "react";
 
-export default function AudioGraph({data}) {
+export default function AudioGraph({data, graphStyle}) {
     const ref = useRef(); // reference for svg
     const frame = useRef(); // stores frame 
 
@@ -17,6 +17,9 @@ export default function AudioGraph({data}) {
         // set the width and height 
         svg.attr("width", width).attr("height", height);
 
+        // remove old graph
+        svg.selectAll("*").remove();
+
         // set the x Scale which is the point's position 
         const xScale = d3.scaleLinear().domain([0, audioData.length - 1]).range([0, width]);
 
@@ -26,11 +29,20 @@ export default function AudioGraph({data}) {
         // creates a curve line to form waves
         const line = d3.line().x((_, i) => xScale(i)).y(d => yScale(d)).curve(d3.curveBasis);
 
-        // remove the old lines before the new ones
-        svg.selectAll("*").remove();
+        // variables set 
+        let path = null;
+        let bars = null;
 
-        // sets colour and stroke-width and sets the path
-        const path = svg.append("path").datum(audioData).attr("fill", "none").attr("stroke","#8F00FF").attr("stroke-width", 2);
+        // if lines is selected 
+        if (graphStyle === 'lines') {
+            path = svg.append("path").datum(audioData).attr("fill", "none").attr("stroke", "#8F00FF").attr("stroke-width", 2);
+        }
+
+        // if bars is selected
+        else if (graphStyle === 'bars') {
+            const xBand = d3.scaleBand().domain(d3.range(audioData.length)).range([0, width]).padding(0.1);
+            bars = svg.selectAll("rect").data(audioData).enter().append("rect").attr("x", (_,i) => xBand(i)).attr("width",xBand.bandwidth()).attr("fill", "#8F00FF");
+        }
 
         // loop to create the animation for the waves for each frame (time movement and sin wave)
         function animate() {
@@ -41,7 +53,13 @@ export default function AudioGraph({data}) {
             });
 
             // update line shape
-            path.datum(audioData).attr("d",line);
+            if (graphStyle === 'lines') {
+                path.datum(audioData).attr("d",line);
+            }
+
+            if (graphStyle === 'bars') {
+                bars.data(audioData).attr("y", d => yScale(d)).attr("height", d => height - yScale(d));
+            }
 
             // store the frame 
             frame.current = requestAnimationFrame(animate);
@@ -52,7 +70,7 @@ export default function AudioGraph({data}) {
 
         return ()=> cancelAnimationFrame(frame.current);
 
-    }, [data]);
+    }, [data, graphStyle]);
 
     return <svg ref={ref}></svg>
 
