@@ -102,7 +102,6 @@ function DJControls({volume, onVolumeChange, onSave, onLoad, mixName, onMixNameC
                 ))}
             </select>
 
-            <hr />
             {/* save and load button */} 
             <button onClick={onSave} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Save</button>
             <button onClick={onLoad} style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} className="btn btn-secondary w-100 mt-2">Load</button>

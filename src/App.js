@@ -23,18 +23,72 @@ export default function StrudelDemo() {
 
     const hasRun = useRef(false);
 
+    // created the refs for the web audio and animation frames to allow rerendering
+    const analyser = useRef(null);
+    const requestAnimationFrames = useRef(null);
+
+    // starts reading the audio signals 
+    const startAnalyser = () => {
+        // if the animation is already occuring, dont reloop it
+        if (requestAnimationFrames.current) return;
+
+        // get the audio context
+        const audioContext = getAudioContext();
+
+        /// create the analayser 
+        if (!analyser.current) {
+            analyser.current = audioContext.createAnalyser();
+            // give the analyser a window size of 256 so it is smoother
+            analyser.current.fftSize = 256;
+        }
+
+        // create a buffer of an array to hold data
+        const bufferLength = analyser.current.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // ensures that the analyser keeps reading the audio
+        const tick = () => {
+            // grabs the audio data and fills them into the array
+            analyser.current.getByteFrequencyData(dataArray);
+            // saves the array
+            setGraphAudio(Array.from(dataArray));
+            // continues to the next frame
+            requestAnimationFrames.current = requestAnimationFrame(tick);
+        };
+
+        tick();
+
+    };
+
+    // stops reading the analyser data
+    const stopAnalyser = () => {
+        // if animation is occuring then stops it
+        if (requestAnimationFrames.current) {
+            // cancles animal frames
+            cancelAnimationFrame(requestAnimationFrames.current);
+            // animation frames will then = null
+            requestAnimationFrames.current = null;
+        }
+    }
+
     // handles starting and evaluating the audio 
     const handlePlay = () => {
         if (!globalEditor) return;
         let outputText = Preprocess({ inputText: procText, volume: volume, bassMute : bassMute, bassReverb : bassReverb, bassPitch : bassPitch, arpMute : arpMute, arpReverb : arpReverb, arpPitch : arpPitch, drumsMute : drumsMute, drumsReverb : drumsReverb, drumsPitch : drumsPitch, drums2Mute : drums2Mute, drums2Reverb : drums2Reverb, drums2Pitch : drums2Pitch});
         globalEditor.setCode(outputText);
         globalEditor.evaluate()
+
+        // start analyser when music is playing
+        startAnalyser();
     }
 
     // handles stopping the audio
     const handleStop = () => {
         if (!globalEditor) return;
         globalEditor.stop()
+
+        // stops analyser when music is paused
+        stopAnalyser();
     }
 
     // use states
@@ -130,9 +184,9 @@ export default function StrudelDemo() {
 
     if (!hasRun.current) {
 
-        document.addEventListener("d3Data", (event) => {
-            setGraphAudio(event.detail);
-        });
+        //document.addEventListener("d3Data", (event) => {
+           // setGraphAudio(event.detail);
+        // });
 
         console_monkey_patch();
         hasRun.current = true;
