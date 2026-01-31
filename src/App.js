@@ -16,6 +16,8 @@ import { Preprocess } from './utils/PreprocessLogic';
 import { saveSettings, loadSettings, loadByName } from './utils/SaveandLoad';
 import AudioGraph from './components/AudioD3Graph';
 import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+import SaveandLoadControls from './components/SaveandLoadControls';
+import VolumeSlider from './components/VolumeSlider';
 
 let globalEditor = null;
 
@@ -143,6 +145,9 @@ export default function StrudelDemo() {
     const [savedMix, setSavedMix] = useState ([]);
     const [selectMix, setSelectMix] = useState ("");
 
+    // allow the selected editor control to display
+    const [selectedControl, setSelectedControl] = useState("preText")
+ 
 
     // handles saving the settings to the local storage (taking into account all the variables)
     const HandleSave = () => {
@@ -244,34 +249,55 @@ export default function StrudelDemo() {
 
 // UI display
 return (
+    // header
     <div className="py-2 mt-2 container my-4">
-        <h2>Strudel Demo</h2>
+        <h2 className="strudelTitle" >STRUDEL DEMO</h2>
+        <div className="menuBanner d-flex align-items-center gap-2">
+            <PlayButtons onPlay={() => {setState("play"); handlePlay()}} onStop={() => {setState("stop"); handleStop()}}/>
+            <SaveandLoadControls mixName={mixName} onMixNameChange={(e) => setMixName(e.target.value)} savedMix={savedMix} selectMix={selectMix} onSelectMixChange={(e) => setSelectMix(e.target.value)} onSave={HandleSave} onLoad={HandleLoad}/>
+        </div>
+
+        <div className="py-2 mt-2 container my-4">
+            <h5 className="neonTitle">VOLUME</h5>
+            <VolumeSlider volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}/>
+        </div>
+
         <main>
         <div className="container-fluid">
                 <div className="row">
-
-                    <div className="col-md-8">
-                    <PreprocessTextarea value={procText} onChange={(e) => setProcText(e.target.value)} />
-                    <div id="editor" style={{marginTop: "20px", overflowY: "auto", height: "650px"}}></div>
-                    <div id="output"></div>
+                    <div className="col-md-5">
+                        <div className="d-flex gap-2 mb-3">
+                            <button className="btn btn-secondary w-100" style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} onClick={() => setSelectedControl("preText")}>Edit Text</button>
+                            <button className="btn btn-secondary w-100" style={{backgroundColor: "#8F00FF", color: "white", border: "white"}} onClick={() => setSelectedControl("controls")}>Controls</button>
                     </div>
-                    <div className="col-md">
-                        <nav>
-                            <PlayButtons onPlay={() => {setState("play"); handlePlay()}} onStop={() => {setState("stop"); handleStop()}}/>
-                            <br />
-                            <br />
-                            <DJControls volume={volume} onVolumeChange={(e) => setVolume(parseFloat(e.target.value))}
+                    
+                    {selectedControl === "preText" && (
+                        <PreprocessTextarea value={procText} onChange={(e) => setProcText(e.target.value)} />
+                    )}
 
-                            selectInstrument={selectInstrument} onInstrumentChange={(e) => setSelectInstrument(e.target.value)}
-                        
-                            bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
-                            arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
-                            drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
-                            drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
-                            mixName = {mixName} onMixNameChange={(e) => setMixName(e.target.value)} savedMix={savedMix} selectMix={selectMix} onSelectMixChange={(e) => setSelectMix(e.target.value)}
-                            onSave = {HandleSave} onLoad = {HandleLoad}
-                            graphStyle={graphStyle} onGraphStyleChange={(e) => setGraphStyle(e.target.value)}
-                            />
+                    {selectedControl === "controls" && (
+                        <DJControls
+
+                        selectInstrument={selectInstrument} onInstrumentChange={(e) => setSelectInstrument(e.target.value)}
+                     
+                        bassMute = {bassMute} onBassMuteChange={setBassMute} bassReverb={bassReverb} onBassReverbChange={setBassReverb} bassPitch={bassPitch} onBassPitchChange={setBassPitch}
+                        arpMute = {arpMute} onArpMuteChange={setArpMute} arpReverb={arpReverb} onArpReverbChange={setArpReverb} arpPitch={arpPitch} onArpPitchChange={setArpPitch}
+                        drumsMute = {drumsMute} onDrumsMuteChange={setDrumsMute} drumsReverb={drumsReverb} onDrumsReverbChange={setDrumsReverb} drumsPitch={drumsPitch} onDrumsPitchChange={setDrumsPitch}
+                        drums2Mute = {drums2Mute} onDrums2MuteChange={setDrums2Mute} drums2Reverb={drums2Reverb} onDrums2ReverbChange={setDrums2Reverb} drums2Pitch={drums2Pitch} onDrums2PitchChange={setDrums2Pitch}
+                        mixName = {mixName} onMixNameChange={(e) => setMixName(e.target.value)} savedMix={savedMix} selectMix={selectMix} onSelectMixChange={(e) => setSelectMix(e.target.value)}
+                        onSave = {HandleSave} onLoad = {HandleLoad}
+                        graphStyle={graphStyle} onGraphStyleChange={(e) => setGraphStyle(e.target.value)}
+                        />
+                    )}
+                    </div>
+
+                    <div className="col-md-7">
+                        <div id="editor" style={{marginTop: "20px", overflowY: "auto", height: "405px"}}></div>
+                        <div id="output"></div>
+                    </div>
+                    
+                    <div className="py-2 mt-2 container my-4">
+                        <nav>
                             <AudioGraph data={graphAudio} graphStyle={graphStyle}/>
                         </nav>
                     </div>

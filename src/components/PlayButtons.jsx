@@ -10,8 +10,8 @@ function PlayButtons({ onPlay , onStop }) {
     return (
         <>
         <div className="btn-group" role="group" aria-label="Basic mixed styles example"> 
-        <button id="play" className="btn btn-secondary w-100 mt-2" onClick={onPlay} style={buttonStyle}>Play</button>
-        <button id="stop" className="btn btn-secondary w-100 mt-2" onClick={onStop} style={buttonStyle}>Stop</button>
+        <button id="play" className="btn btn-secondary w-100" onClick={onPlay} style={buttonStyle}>Play</button>
+        <button id="stop" className="btn btn-secondary w-100" onClick={onStop} style={buttonStyle}>Stop</button>
         </div>
         </>
     );
