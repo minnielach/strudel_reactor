@@ -28,7 +28,7 @@ export default function StrudelDemo() {
     const requestAnimationFrames = useRef(null);
 
     // starts reading the audio signals 
-    const startAnalyser = () => {
+   const startAnalyser = () => {
         // if the animation is already occuring, dont reloop it
         if (requestAnimationFrames.current) return;
 
@@ -41,6 +41,25 @@ export default function StrudelDemo() {
             // give the analyser a window size of 256 so it is smoother
             analyser.current.fftSize = 256;
         }
+
+        // create an oscillator for the analyser to create saw tooth waves
+        const oscillator = audioContext.createOscillator();
+
+        // gainNode is created to control the volume 
+        const gainNode = audioContext.createGain();
+
+        // make the waves into saw tooth
+        oscillator.type = "sawtooth";
+        oscillator.frequency.value = 440;
+
+        // low sound so user cannot hear a buzzing noise 
+        gainNode.gain.value = 0.003;
+
+        // connect the oscilattor, gain node, audio output and analyser with each other 
+        oscillator.connect(gainNode);
+        gainNode.connect(analyser.current);
+        analyser.current.connect(audioContext.destination);
+        oscillator.start();
 
         // create a buffer of an array to hold data
         const bufferLength = analyser.current.frequencyBinCount;
@@ -56,6 +75,7 @@ export default function StrudelDemo() {
             requestAnimationFrames.current = requestAnimationFrame(tick);
         };
 
+        // start looping animation 
         tick();
 
     };
@@ -185,8 +205,8 @@ export default function StrudelDemo() {
     if (!hasRun.current) {
 
         //document.addEventListener("d3Data", (event) => {
-           // setGraphAudio(event.detail);
-        // });
+          //setGraphAudio(event.detail);
+        //});
 
         console_monkey_patch();
         hasRun.current = true;

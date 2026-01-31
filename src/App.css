@@ -37,3 +37,9 @@
   }
 }
 
+/* make the graph fit and a bit bigger */
+.audioGraph {
+  transform: scale(1.5);
+  transform-origin: top left;
+}
+
